@@ -3,14 +3,12 @@ import os
 # 讀取檔案
 def read_file(file_name):
     products = [] 
-    if os.path.isfile(file_name):
-        print('檔案存在')
-        with open(file_name, 'r', encoding = 'utf-8') as f:
-            for line in f:
-                if '商品,價格' in line:
-                    continue
-                name, price = line.strip().split(',')
-                products.append([name,price])
+    with open(file_name, 'r', encoding = 'utf-8') as f:
+        for line in f:
+            if '商品,價格' in line:
+                continue
+            name, price = line.strip().split(',')
+            products.append([name,price])
     return products
 
 # 讓使用者輸入
@@ -37,10 +35,18 @@ def write_file(file_name, products):
         f.write('商品,價格\n')
         for name, price in products:
             f.write(f'{name},{price}\n')
-            
+
 # 執行function
-file_name = 'accounting.csv'
-products = read_file(file_name) # prcducts是用來接return出來的東西(讀取已存在檔案內的products)
-products = user_input(products) # prcducts是用來接return出來的東西(已加入新products)
-print_procucts(products)
-write_file(file_name, products)
+def main():
+    file_name = 'accounting.csv'
+    # 檢查檔案在不在，之所以不用寫成func，是因為他很短，且只用一次
+    if os.path.isfile(file_name):
+        print('檔案存在')
+        products = read_file(file_name) # prcducts是用來接return出來的東西(讀取已存在檔案內的products)
+    else:
+        print('檔案不存在')
+    products = user_input(products) # prcducts是用來接return出來的東西(已加入新products)
+    print_procucts(products)
+    write_file(file_name, products)
+
+main()
