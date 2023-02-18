@@ -1,9 +1,9 @@
 import os
 
 # 讀取檔案
-def read_file(file_name):
+def read_file(filename):
     products = [] 
-    with open(file_name, 'r', encoding = 'utf-8') as f:
+    with open(filename, 'r', encoding = 'utf-8') as f:
         for line in f:
             if '商品,價格' in line:
                 continue
@@ -30,7 +30,7 @@ def print_procucts(products):
         print(f'{name}的價格為{price}')
 
 #寫入檔案
-def write_file(file_name, products):
+def write_file(filename, products):
     with open('accounting.csv', 'w', encoding = 'utf-8') as f:
         f.write('商品,價格\n')
         for name, price in products:
@@ -38,15 +38,15 @@ def write_file(file_name, products):
 
 # 執行function
 def main():
-    file_name = 'accounting.csv'
+    filename = 'accounting.csv'
     # 檢查檔案在不在，之所以不用寫成func，是因為他很短，且只用一次
-    if os.path.isfile(file_name):
+    if os.path.isfile(filename):
         print('檔案存在')
-        products = read_file(file_name) # prcducts是用來接return出來的東西(讀取已存在檔案內的products)
+        products = read_file(filename) # prcducts是用來接return出來的東西(讀取已存在檔案內的products)
     else:
         print('檔案不存在')
     products = user_input(products) # prcducts是用來接return出來的東西(已加入新products)
     print_procucts(products)
-    write_file(file_name, products)
+    write_file(filename, products)
 
 main()
