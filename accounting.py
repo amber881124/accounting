@@ -1,15 +1,20 @@
 import os
 
-products = [] 
+# 讀取檔案
+def read_file(file_name):
+    products = [] 
+    if os.path.isfile(file_name):
+        print('檔案存在')
+        with open(file_name, 'r', encoding = 'utf-8') as f:
+            for line in f:
+                if '商品,價格' in line:
+                    continue
+                name, price = line.strip().split(',')
+                products.append([name,price])
+    return products
 
-if os.path.isfile('accounting.csv'):
-    print('檔案存在')
-    with open('accounting.csv', 'r', encoding = 'utf-8') as f:
-        for line in f:
-            name, price = line.strip().split(',')
-            products.append([name,price])
-
-with open('accounting.csv', 'w', encoding = 'utf-8') as f:
+# 讓使用者輸入
+def user_input(products):
     while True:
         name = input('請輸入商品名稱： ')
         if  name == 'q':
@@ -19,5 +24,23 @@ with open('accounting.csv', 'w', encoding = 'utf-8') as f:
         price = int(price)
         products.append([name, price])
     print(products)
+    return products
+
+# 印出所有購買紀錄
+def print_procucts(products):
     for name, price in products:
-        f.write(f'{name},{price}\n')
+        print(f'{name}的價格為{price}')
+
+#寫入檔案
+def write_file(file_name, products):
+    with open('accounting.csv', 'w', encoding = 'utf-8') as f:
+        f.write('商品,價格\n')
+        for name, price in products:
+            f.write(f'{name},{price}\n')
+            
+# 執行function
+file_name = 'accounting.csv'
+products = read_file(file_name) # prcducts是用來接return出來的東西(讀取已存在檔案內的products)
+products = user_input(products) # prcducts是用來接return出來的東西(已加入新products)
+print_procucts(products)
+write_file(file_name, products)
